@@ -31,7 +31,9 @@ void setup() {
 }
 
 void loop() {
-  for (int i=0; i < 10; i++){
+  int lastindex = 0;
+
+  for (int i = lastindex; i < 10; i++){
     float sum = 0;
     float avg = 0;
     
@@ -49,6 +51,7 @@ void loop() {
 
     // chek the pressure is correct
     if (pressure > avg*1.4){
+      lastindex = i;
       break;
     }
     // send the beginning
@@ -86,8 +89,11 @@ void loop() {
     SerialBT.print("*");
     SerialBT.println(updateChecksum(str));
 
-    // refresh the datas list
+    // refresh the datas list and reset lastindex
     datas[i] = pressure;
+    if (i == 9){
+      lastindex = 0;
+    }
 
     delay(200);
   }
