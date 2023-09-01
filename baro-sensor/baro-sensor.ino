@@ -28,6 +28,8 @@ void setup() {
     
     delay(200);
   }
+  SerialBT.print("Kezdeti nyomásátlag: ");
+  SerialBT.println(String(avg(datas))+"HPa");
 }
 
 void loop() {
@@ -35,7 +37,6 @@ void loop() {
 
   for (int i = lastindex; i < 10; i++){
     float sum = 0;
-    float avg = 0;
     
     // messure
     float pressure = bmp.readPressure() / 100.0F;
@@ -46,11 +47,10 @@ void loop() {
     for (int a=0; a < 10; a++){
       sum = sum + datas[i];
     }
-    avg = sum / 10;
   
 
     // chek the pressure is correct
-    if (pressure > avg*1.4){
+    if (pressure > avg(datas)*1.4){
       lastindex = i;
       break;
     }
@@ -114,4 +114,12 @@ String updateChecksum(String cmd)
   }
   
   return hexsum;
+}
+
+float avg(float datalist[10]){
+  float summa = 0;
+  for (int index = 0; index < 10; index ++){
+    summa = summa + datalist[index];
+  }
+  return summa/10;
 }
