@@ -22,12 +22,32 @@ void setup() {
   }
 
   // make the avg list
-  for (int i=0; i < 10; i++) {
+  int index = 0;
+  float sum = 0, avgsetup = 0;
+  do{
     float pressure = bmp.readPressure() / 100.0F;
-    datas[i] = pressure;
     
+    if (index == 0){
+      datas[index] = pressure;
+      index++;
+      continue;
+    }
+    for (int i=0; i < index; i++){
+      sum = sum + datas[i];
+    }
+    if (index != 1){
+      avgsetup = sum / (index-1);
+    }
+    else{
+      avgsetup = sum;
+    }
+    if (pressure < avgsetup*1,5){
+      datas[index] = pressure;
+      index++;
+    }
     delay(200);
-  }
+  } while(index < 10);
+
   SerialBT.print("Kezdeti nyomásátlag: ");
   SerialBT.println(String(avg(datas))+"HPa");
 }
